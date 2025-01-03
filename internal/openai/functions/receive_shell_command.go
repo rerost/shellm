@@ -46,7 +46,6 @@ func (r ReceiveShellCommand) Run(arguments string) (string, error) {
 	}
 	fmt.Println("$ ", arg.Command)
 
-	// tmp ファイルに書き込み実行するようにする
 	tempfile, err := os.CreateTemp("", "shellm-")
 	if err != nil {
 		return "", errors.WithStack(err)
