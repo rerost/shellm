@@ -1,0 +1,19 @@
+{
+    "name": "check",
+    "description": "Check items based on user questions. When this completes successfully, it is determined that the user's purpose has been achieved. This script end in 2 seconds",
+    "strict": true,
+    "parameters": {
+      "type": "object",
+      "required": [
+        "script"
+      ],
+      "properties": {
+        "script": {
+          "type": "string",
+          "description": "The shell script to be executed"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+  
