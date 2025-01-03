@@ -8,7 +8,6 @@ import (
 	"io"
 	"os"
 	"os/exec"
-	"strings"
 
 	"github.com/pkg/errors"
 	gopenai "github.com/sashabaranov/go-openai"
@@ -47,12 +46,20 @@ func (r ReceiveShellCommand) Run(arguments string) (string, error) {
 	}
 	fmt.Println("$ ", arg.Command)
 
-	// ときおり、
-	// OK: ["traceroute", "google.com"]
-	// NG: ["traceroute google.com"]
-	// のNGのようなレスポンスを返すため
-	split := strings.Split(arg.Command, " ")
-	cmd := exec.Command(split[0], split[1:]...)
+	// tmp ファイルに書き込み実行するようにする
+	tempfile, err := os.CreateTemp("", "shellm-")
+	if err != nil {
+		return "", errors.WithStack(err)
+	}
+	defer tempfile.Close()
+
+	if err := os.Chmod(tempfile.Name(), 0755); err != nil {
+		return "", errors.WithStack(err)
+	}
+
+	tempfile.WriteString(arg.Command)
+
+	cmd := exec.Command("bash", tempfile.Name())
 
 	var outBuf bytes.Buffer
 	outWritter := io.MultiWriter(os.Stdout, &outBuf)
@@ -66,7 +73,7 @@ func (r ReceiveShellCommand) Run(arguments string) (string, error) {
 
 	cmd.Dir = arg.WorkingDirectory
 
-	err := cmd.Run()
+	err = cmd.Run()
 
 	return fmt.Sprintf("Response: \n```\n%s\n```\nError: \n```\n%s\n```\n %v", outBuf.String(), outErrBuf.String(), err), nil
 }
