@@ -9,7 +9,7 @@ import (
 	"strconv"
 
 	"github.com/pkg/errors"
-	"github.com/rerost/tmp/shellm/internal/openai/functions"
+	"github.com/rerost/shellm/internal/openai/functions"
 	gopenai "github.com/sashabaranov/go-openai"
 )
 

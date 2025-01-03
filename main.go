@@ -9,7 +9,7 @@ import (
 
 	"github.com/peterh/liner"
 	"github.com/pkg/errors"
-	"github.com/rerost/tmp/shellm/internal/openai"
+	"github.com/rerost/shellm/internal/openai"
 )
 
 var debug = flag.Bool("debug", false, "デバッグモードを有効にする")

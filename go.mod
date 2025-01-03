@@ -1,4 +1,4 @@
-module github.com/rerost/tmp/shellm
+module github.com/rerost/shellm
 
 go 1.23.4
 
