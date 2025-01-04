@@ -342,7 +342,7 @@ func (r Response) Print() {
 		// Do Nothing
 	case ResponseTypeComplete:
 		r.Completed.Print()
-		fmt.Println("Complete")
+		fmt.Println("[System] Complete")
 	}
 }
 
