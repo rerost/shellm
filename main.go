@@ -92,6 +92,10 @@ func Run() error {
 		}
 
 		response.Print()
+
+		if response.ResponseType == openai.ResponseTypeComplete {
+			break
+		}
 	}
 	if f, err := os.Create(".shellm_history"); err == nil {
 		_, _ = line.WriteHistory(f)

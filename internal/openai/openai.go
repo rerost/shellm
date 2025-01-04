@@ -98,6 +98,17 @@ type Schema struct {
 			Required             []string `json:"required"`
 			AdditionalProperties bool     `json:"additionalProperties"`
 		} `json:"choice"`
+		Completed struct {
+			Type       string `json:"type"`
+			Properties struct {
+				Message struct {
+					Type        string `json:"type"`
+					Description string `json:"description"`
+				} `json:"Message"`
+			} `json:"properties"`
+			Required             []string `json:"required"`
+			AdditionalProperties bool     `json:"additionalProperties"`
+		} `json:"completed"`
 	} `json:"$defs"`
 }
 
@@ -257,8 +268,8 @@ func (l *llmImpl) Call(input string, debug bool) (Response, error) {
 		}
 		if t.Type == "Completed" {
 			type Arg struct {
-				Type    string `json:"type"`
-				Content YesNo  `json:"content"`
+				Type    string    `json:"type"`
+				Content Completed `json:"content"`
 			}
 			var req Arg
 			if err := json.Unmarshal([]byte(message.Content), &req); err != nil {
@@ -266,16 +277,13 @@ func (l *llmImpl) Call(input string, debug bool) (Response, error) {
 			}
 
 			return Response{
-				ResponseType: ResponseTypeYesNo,
-				YesNo:        &req.Content,
+				ResponseType: ResponseTypeComplete,
+				Completed:    &req.Content,
 			}, nil
 		}
 	}
 
-	return Response{
-		ResponseType: ResponseTypeMessage,
-		Content:      &message.Content,
-	}, nil
+	return Response{}, nil
 }
 
 type Choice struct {
@@ -298,21 +306,30 @@ func (c *YesNo) Print() {
 	fmt.Printf("[ChatGPT] %s (Yes/No)\n", c.Question)
 }
 
+type Completed struct {
+	Message string `json:"Message"`
+}
+
+func (c *Completed) Print() {
+	fmt.Printf("[ChatGPT] %s\n", c.Message)
+}
+
 type ResponseType string
 
 const (
 	ResponseTypeYesNo         ResponseType = "yes_no"
 	ResponseTypeChoice        ResponseType = "choice"
 	ResponseTypeCommandResult ResponseType = "command_result"
-	ResponseTypeMessage       ResponseType = "message"
+	ResponseTypeComplete      ResponseType = "complete"
 )
 
 type Response struct {
 	ResponseType ResponseType
 
-	Content *string
-	YesNo   *YesNo
-	Choice  *Choice
+	Content   *string
+	YesNo     *YesNo
+	Choice    *Choice
+	Completed *Completed
 }
 
 func (r Response) Print() {
@@ -323,8 +340,9 @@ func (r Response) Print() {
 		r.Choice.Print()
 	case ResponseTypeCommandResult:
 		// Do Nothing
-	case ResponseTypeMessage:
-		fmt.Println(r.Content)
+	case ResponseTypeComplete:
+		r.Completed.Print()
+		fmt.Println("Complete")
 	}
 }
 
