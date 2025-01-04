@@ -51,7 +51,7 @@ jobs:
 
         git commit -m "chore: Update snapshot $(date +'%Y-%m-%d %H:%M:%S')"
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-        git push origin $(git rev-parse --abbrev-ref HEAD);
+        git push origin HEAD:refs/heads/$(git rev-parse --abbrev-ref HEAD);
       env:
         TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
