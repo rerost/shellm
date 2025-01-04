@@ -56,7 +56,10 @@ func (r ReceiveShellCommand) Run(arguments string) (string, error) {
 		return "", errors.WithStack(err)
 	}
 
-	tempfile.WriteString(arg.Command)
+	_, err = tempfile.WriteString(arg.Command)
+	if err != nil {
+		return "", errors.WithStack(err)
+	}
 
 	cmd := exec.Command("bash", tempfile.Name())
 

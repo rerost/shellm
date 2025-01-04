@@ -1,0 +1,78 @@
+name: Go
+
+on:
+  push:
+    branches: [ master ]
+    tags:
+      - '*'
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-go@v5
+      with:
+        go-version-file: 'go.mod'
+    - name: Build shellm
+      run: go build .
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-go@v5
+      with:
+        go-version-file: 'go.mod'
+    - name: Test
+      run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+      env:
+        TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+  check-generate:
+    name: Check Go Generate
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-go@v5
+      with:
+        go-version-file: 'go.mod'
+    - name: Check Go Generate
+      run: go generate ./... && go mod tidy && git diff --exit-code
+  check-goreleaser:
+    name: Check GoReleaser
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          version: latest
+          args: check
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+  check-renovate-config:
+    name: Check Renovate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Renovate config
+        run: npx --yes --package renovate -- renovate-config-validator --strict
+  golangci:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.60
