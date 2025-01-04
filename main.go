@@ -44,7 +44,7 @@ func Run() error {
 	var prevResponse *openai.Response
 
 	// コマンドライン引数があればそれを実行する
-	args := os.Args[1:]
+	args := flag.Args()
 	var initialMessage string
 	if len(args) > 0 {
 		initialMessage = args[0]
