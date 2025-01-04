@@ -51,7 +51,7 @@ jobs:
 
         git commit -m "chore: Update snapshot $(date +'%Y-%m-%d %H:%M:%S')"
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-        BRANCH_NAME="${GITHUB_BASE_REF:-$GITHUB_REF_NAME}"
+        BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
         git push origin $BRANCH_NAME
       env:
         TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
