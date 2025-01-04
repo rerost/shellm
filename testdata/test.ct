@@ -5,19 +5,27 @@ $ shellm
 Shellm REPL
 >
 
+# Run Shell Command
 $ shellm "OKと出力して"
 Shellm REPL
 $  echo "OK"
 OK
 [ChatGPT] 要求通りに"OK"と出力されましたか？ (Yes/No)
 >
-$ echo 'OK'
-'OK'
-$ echo OK
-OK
-$ echo OK
-OK
-$ echo "OK"
-"OK"
-$ echo OK
-OK
+
+# Choice
+$ shellm "私の血液型はどれだと思う？"
+Shellm REPL
+[ChatGPT] あなたの血液型はどれですか？
+0: A型
+1: B型
+2: O型
+3: AB型
+4: 不明
+
+# Yes/No
+$ shellm "lsを実行するかどうか聞いて？"
+Shellm REPL
+[ChatGPT] lsコマンドを実行しますか？ (Yes/No)
+>
+
