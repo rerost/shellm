@@ -27,6 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
     - uses: actions/setup-go@v5
       with:
         go-version-file: 'go.mod'
@@ -46,8 +48,8 @@ jobs:
           exit 0
         fi
 
-        git commit -m "chore: 自動更新 $(date +'%Y-%m-%d %H:%M:%S')"
-        git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref_name }}
+        git commit -m "chore: Update snapshot $(date +'%Y-%m-%d %H:%M:%S')"
+        git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD
       env:
         TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
