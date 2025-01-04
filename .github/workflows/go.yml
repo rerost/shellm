@@ -28,9 +28,26 @@ jobs:
       with:
         go-version-file: 'go.mod'
     - name: Test
-      run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+      run: |
+        go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+
+        # LLM を使う都合上、出力が安定しない。
+        # スナップショットを更新し、Diffでチェックできるようにしている
+
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+        git add .
+        if git diff --staged --quiet; then
+          echo "変更なし"
+          exit 0
+        fi
+
+        git commit -m "chore: 自動更新 $(date +'%Y-%m-%d %H:%M:%S')"
+        git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref_name }}
       env:
         TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5
       with:

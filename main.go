@@ -17,13 +17,13 @@ var debug = flag.Bool("debug", false, "デバッグモードを有効にする")
 func main() {
 	flag.Parse()
 
-	if err := run(); err != nil {
+	if err := Run(); err != nil {
 		fmt.Printf("%+v", err)
 		os.Exit(1)
 	}
 }
 
-func run() error {
+func Run() error {
 	c, err := openai.New()
 	if err != nil {
 		return errors.WithStack(err)
@@ -43,10 +43,26 @@ func run() error {
 
 	var prevResponse *openai.Response
 
+	// コマンドライン引数があればそれを実行する
+	args := os.Args[1:]
+	var initialMessage string
+	if len(args) > 0 {
+		initialMessage = args[0]
+	}
+
 	for {
 		var input string
-		// 前回のメッセージがFunction Callの場合次に進む
-		if prevResponse == nil || prevResponse.ResponseType != openai.ResponseTypeCommandResult {
+		// 以下のどちらかを満たす時は、プロンプトをスキップ
+		// 1. 初回ループではなく、前回のメッセージがFunction Call
+		// 2. 初回ループで、初回メッセージが与えられた状態
+		prevCallIsFunctionCall := prevResponse != nil && prevResponse.ResponseType == openai.ResponseTypeCommandResult
+		initialCallAndInitialMessageIsPresent := prevResponse == nil && initialMessage != ""
+
+		if initialCallAndInitialMessageIsPresent {
+			input = initialMessage
+		}
+
+		if !(prevCallIsFunctionCall || initialCallAndInitialMessageIsPresent) {
 			i, err := line.Prompt("> ")
 			if err == io.EOF {
 				break

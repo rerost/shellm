@@ -1,0 +1,13 @@
+$ echo OK
+OK
+
+$ shellm
+Shellm REPL
+>
+
+$ shellm "OKと出力して"
+Shellm REPL
+(?m)^\$ echo OK$ 
+OK
+[ChatGPT] 出力が「OK」となりました。これで問題ありませんか？ (Yes/No)
+>
