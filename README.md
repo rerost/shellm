@@ -1,6 +1,8 @@
 # shellm
 Run any command by ChatGPT
 
+https://github.com/user-attachments/assets/604cfaf5-98fa-4d6a-a611-0913109ad990
+
 ## Example
 ```
 > Create VPN
