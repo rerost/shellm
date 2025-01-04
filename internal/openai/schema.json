@@ -8,7 +8,8 @@
         "type": "string",
         "enum": [
           "YesNo",
-          "Choice"
+          "Choice",
+          "Completed"
         ],
         "description": "The type of the question"
       },
@@ -19,6 +20,9 @@
           },
           {
             "$ref": "#/$defs/choice"
+          },
+          {
+            "$ref": "#/$defs/completed"
           }
         ],
         "description": "The content of the question based on its type"
@@ -61,6 +65,19 @@
         "required": [
           "Question",
           "Choices"
+        ],
+        "additionalProperties": false
+      },
+      "completed": {
+        "type": "object",
+        "properties": {
+          "Message": {
+            "type": "string",
+            "description": "This is your last message for User. Goodbye or Thank you."
+          }
+        },
+        "required": [
+          "Message"
         ],
         "additionalProperties": false
       }
