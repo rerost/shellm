@@ -46,12 +46,9 @@ var schemaJson []byte
 var systemPrompt string
 
 func (s Schema) MarshalJSON() ([]byte, error) {
-	b, err := json.Marshal(s)
-	if err != nil {
-		return nil, errors.WithStack(err)
-	}
-
-	return b, nil
+	// Avoid infinite recursion by using
+	type Alias Schema
+	return json.Marshal((*Alias)(&s))
 }
 
 type Schema struct {
