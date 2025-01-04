@@ -2,7 +2,6 @@ package main
 
 import (
 	_ "embed"
-	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -12,11 +11,7 @@ import (
 	"github.com/rerost/shellm/internal/openai"
 )
 
-var debug = flag.Bool("debug", false, "デバッグモードを有効にする")
-
 func main() {
-	flag.Parse()
-
 	if err := Run(); err != nil {
 		fmt.Printf("%+v", err)
 		os.Exit(1)
@@ -44,10 +39,22 @@ func Run() error {
 	var prevResponse *openai.Response
 
 	// コマンドライン引数があればそれを実行する
-	args := flag.Args()
+	args := os.Args[1:] // 最初の要素はプログラム名なので除外
+	var debug bool
+	var message []string
+
+	// 手動でフラグを解析
+	// cmdtest で flag.Args を利用すると、空になる問題のため
+	for _, arg := range args {
+		if arg == "--debug" {
+			debug = true
+		} else {
+			message = append(message, arg)
+		}
+	}
 	var initialMessage string
 	if len(args) > 0 {
-		initialMessage = args[0]
+		initialMessage = message[0]
 	}
 
 	for {
@@ -79,7 +86,7 @@ func Run() error {
 			input = prevResponse.Decorate(input)
 		}
 
-		response, err := c.Call(input, *debug)
+		response, err := c.Call(input, debug)
 		if err != nil {
 			return errors.WithStack(err)
 		}
