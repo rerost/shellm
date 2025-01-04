@@ -7,10 +7,12 @@ Shellm REPL
 
 $ shellm "OKと出力して"
 Shellm REPL
-$  echo 'OK'
+$  echo "OK"
 OK
-[ChatGPT] OKと出力されましたが、これで完了ですか？ (Yes/No)
+[ChatGPT] 要求通りに"OK"と出力されましたか？ (Yes/No)
 >
+$ echo 'OK'
+'OK'
 $ echo OK
 OK
 $ echo OK
