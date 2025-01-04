@@ -64,9 +64,14 @@ func Run() error {
 
 		if !(prevCallIsFunctionCall || initialCallAndInitialMessageIsPresent) {
 			i, err := line.Prompt("> ")
-			if err == io.EOF {
-				break
+			if err != nil {
+				if err == io.EOF || err == liner.ErrPromptAborted {
+					break
+				} else {
+					return errors.WithStack(err)
+				}
 			}
+
 			input = i
 		}
 
