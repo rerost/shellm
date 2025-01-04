@@ -8,14 +8,9 @@ Shellm REPL
 # Run Shell Command
 $ shellm "OKと出力して"
 Shellm REPL
-$  echo OK
+(?m)^\$ echo OK$
 OK
 [ChatGPT] "OK"と出力しました。これで問題は解決しましたか？ (Yes/No)
->
-$ echo OK
-OK
-$ echo "OK"
-"OK"
 
 # Choice
 $ shellm "私の血液型はどれだと思う？"
