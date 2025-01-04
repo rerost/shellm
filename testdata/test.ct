@@ -9,8 +9,10 @@ $ shellm "OKと出力して"
 Shellm REPL
 $  echo OK
 OK
-[ChatGPT] "OK"と出力されましたが、他に何かお手伝いできることはありますか？ (Yes/No)
+[ChatGPT] 「OK」と出力しましたが、次に進みますか？ (Yes/No)
 >
+$ echo OK
+OK
 $ echo "OK"
 "OK"
 $ echo OK
