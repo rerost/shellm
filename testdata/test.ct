@@ -7,7 +7,7 @@ Shellm REPL
 
 $ shellm "OKと出力して"
 Shellm REPL
-(?m)^\$ echo OK$ 
+$  echo OK
 OK
-[ChatGPT] 出力が「OK」となりました。これで問題ありませんか？ (Yes/No)
+[ChatGPT] 出力されましたか？ (Yes/No)
 >
