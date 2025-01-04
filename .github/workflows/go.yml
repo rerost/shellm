@@ -29,7 +29,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         persist-credentials: false
-        fetch-depth: 0
+        fetch-depth: 1
     - uses: actions/setup-go@v5
       with:
         go-version-file: 'go.mod'
@@ -51,9 +51,6 @@ jobs:
 
         # 現在のブランチ名を取得
         BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-        
-        # リモートの変更を取得してマージ
-        git pull --rebase origin $BRANCH_NAME
 
         git commit -m "chore: Update snapshot $(date +'%Y-%m-%d %H:%M:%S')"
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
