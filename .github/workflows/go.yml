@@ -50,10 +50,7 @@ jobs:
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
         git push origin HEAD:refs/heads/$BRANCH_NAME
       env:
-        TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-    - name: Install tmate
-      uses: mxschmitt/action-tmate@v3
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5
       with:
