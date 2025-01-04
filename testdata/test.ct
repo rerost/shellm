@@ -8,16 +8,10 @@ Shellm REPL
 # Run Shell Command
 $ shellm "OKと出力して"
 Shellm REPL
-$  echo OK
+(?m)^\$ echo OK$
 OK
 [ChatGPT] OK
 [System] Complete
-$ echo OK
-OK
-$ echo OK
-$ echo OK
-OK
-OK
 
 # Choice
 $ shellm "私の血液型はどれだと思う？"
