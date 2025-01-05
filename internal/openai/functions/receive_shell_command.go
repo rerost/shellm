@@ -44,7 +44,7 @@ func (r ReceiveShellCommand) Run(arguments string) (string, error) {
 	if err := json.Unmarshal([]byte(arguments), &arg); err != nil {
 		return "", errors.WithStack(err)
 	}
-	fmt.Println("$ ", arg.Command)
+	fmt.Println("[Local] $", arg.Command)
 
 	tempfile, err := os.CreateTemp("", "shellm-")
 	if err != nil {
