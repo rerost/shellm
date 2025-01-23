@@ -8,30 +8,27 @@ Shellm REPL
 # Run Shell Command
 $ shellm "OKと出力して"
 Shellm REPL
-[Local] $ echo OK
-OK
 [ChatGPT] OK
 [System] Complete
 
 # Choice
 $ shellm "私の血液型はどれだと思う？"
 Shellm REPL
-[ChatGPT] あなたの血液型を推測することはできませんが、一般的な血液型をご覧いただけます。血液型はどれですか？
+[ChatGPT] あなたの血液型について私自身の情報に基づいて推測することはできません。以下の選択肢のどれがあなたの血液型ですか？
 0: A型
 1: B型
 2: O型
 3: AB型
-4: わからない
 >
 
 # Yes/No
 $ shellm "lsを実行するかどうか聞いて？"
 Shellm REPL
-[ChatGPT] lsコマンドを実行しますか？ (Yes/No)
+[ChatGPT] lsコマンドを実行して、ディレクトリ内のファイルやフォルダの一覧を表示しますか？ (Yes/No)
 >
 
 # Complete
 $ shellm "なんでもなかった。終了して"
 Shellm REPL
-[ChatGPT] 完了しました。いつでも何か質問やサポートが必要なときはお知らせください。お疲れ様でした。
+[ChatGPT] 了解しました。何か他にお手伝いできることがあれば、いつでもお知らせください。それでは、失礼いたします。
 [System] Complete

@@ -2,6 +2,7 @@ package functions
 
 import (
 	"bytes"
+	"context"
 	_ "embed"
 	"encoding/json"
 	"fmt"
@@ -17,6 +18,7 @@ import (
 var functionJson []byte
 
 type ReceiveShellCommand struct {
+	Check *Check
 }
 
 func (r ReceiveShellCommand) Name() string {
@@ -35,10 +37,12 @@ func (r ReceiveShellCommand) Register() gopenai.Tool {
 	}
 }
 
-func (r ReceiveShellCommand) Run(arguments string) (string, error) {
+func (r ReceiveShellCommand) Run(ctx context.Context, arguments string) (string, error) {
 	type Argument struct {
 		Command          string `json:"command"`
 		WorkingDirectory string `json:"working_directory"`
+		Task             string `json:"task"`
+		CurrentStep      string `json:"current_step"`
 	}
 	var arg Argument
 	if err := json.Unmarshal([]byte(arguments), &arg); err != nil {
@@ -76,6 +80,32 @@ func (r ReceiveShellCommand) Run(arguments string) (string, error) {
 	cmd.Dir = arg.WorkingDirectory
 
 	err = cmd.Run()
+	result := fmt.Sprintf("Response: \n```\n%s\n```\nError: \n```\n%s\n```\n %v", outBuf.String(), outErrBuf.String(), err)
 
-	return fmt.Sprintf("Response: \n```\n%s\n```\nError: \n```\n%s\n```\n %v", outBuf.String(), outErrBuf.String(), err), nil
+	// If Check is configured and task/step are provided, perform completion check
+	if r.Check != nil && arg.Task != "" && arg.CurrentStep != "" {
+		checkRequest := CheckRequest{
+			Task:        arg.Task,
+			CurrentStep: arg.CurrentStep,
+			Result:      result,
+		}
+
+		checkResult, checkErr := r.Check.Call(ctx, checkRequest)
+		if checkErr != nil {
+			return result + "\nCheck Error: " + checkErr.Error(), nil
+		}
+
+		var checkResponse CheckResponse
+		if err := json.Unmarshal([]byte(checkResult), &checkResponse); err != nil {
+			return result + "\nCheck Parse Error: " + err.Error(), nil
+		}
+
+		if !checkResponse.IsValid {
+			return result + fmt.Sprintf("\n\nCompletion Check Failed: %s", checkResponse.Reason), nil
+		}
+
+		return result + "\n\nCompletion Check Passed ✓", nil
+	}
+
+	return result, nil
 }

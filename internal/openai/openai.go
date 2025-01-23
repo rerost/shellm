@@ -125,11 +125,18 @@ func New() (*llmImpl, error) {
 	// OpenAI APIキー (環境変数から取得)
 	var openAIKey = os.Getenv("OPENAI_API_KEY")
 
-	// Read Functions
+	// Initialize Check with dedicated LLM
+	checkLLM := NewCheckLLM(openAIKey)
+	check := &functions.Check{
+		LLM: checkLLM,
+	}
+
+	// Initialize function manager with ReceiveShellCommand that includes Check
 	functionManager := functions.NewFunctionManager()
 	functionManager.Register(
-		functions.ReceiveShellCommand{},
-		// functions.Check{},
+		functions.ReceiveShellCommand{
+			Check: check,
+		},
 	)
 
 	// Read Schema
@@ -213,7 +220,7 @@ func (l *llmImpl) Call(input string, debug bool) (Response, error) {
 
 	if tcs := message.ToolCalls; tcs != nil {
 		for _, tc := range tcs {
-			response, err := l.FunctionManager.Run(tc.Function.Name, tc.Function.Arguments)
+			response, err := l.FunctionManager.Run(ctx, tc.Function.Name, tc.Function.Arguments)
 			if err != nil {
 				return Response{}, errors.WithStack(err)
 			}

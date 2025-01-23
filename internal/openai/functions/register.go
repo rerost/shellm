@@ -1,6 +1,7 @@
 package functions
 
 import (
+	"context"
 	"errors"
 
 	gopenai "github.com/sashabaranov/go-openai"
@@ -9,7 +10,7 @@ import (
 type Function interface {
 	Name() string
 	Register() gopenai.Tool
-	Run(arguments string) (string, error)
+	Run(ctx context.Context, arguments string) (string, error)
 }
 
 type FunctionManager struct {
@@ -31,12 +32,12 @@ func (m *FunctionManager) Register(functions ...Function) {
 	}
 }
 
-func (m *FunctionManager) Run(name string, arguments string) (string, error) {
+func (m *FunctionManager) Run(ctx context.Context, name string, arguments string) (string, error) {
 	function, ok := m.m[name]
 	if !ok {
 		return "", errors.New("function not found")
 	}
-	return function.Run(arguments)
+	return function.Run(ctx, arguments)
 }
 
 func (m *FunctionManager) Tools() []gopenai.Tool {

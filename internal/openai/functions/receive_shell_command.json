@@ -1,12 +1,11 @@
 {
   "name": "receive_shell_command",
-  "description": "Receive Shell Command",
+  "description": "Receive Shell Command and optionally check its completion",
   "strict": true,
   "parameters": {
     "type": "object",
     "required": [
       "command",
-      "timeout",
       "working_directory"
     ],
     "properties": {
@@ -14,13 +13,17 @@
         "type": "string",
         "description": "The shell command to be executed"
       },
-      "timeout": {
-        "type": "number",
-        "description": "Time in seconds before the command times out"
-      },
       "working_directory": {
         "type": "string",
         "description": "The directory in which to execute the command"
+      },
+      "task": {
+        "type": "string",
+        "description": "The overall task being performed (required for completion check)"
+      },
+      "current_step": {
+        "type": "string",
+        "description": "The current step being executed (required for completion check)"
       }
     },
     "additionalProperties": false
