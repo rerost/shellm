@@ -6,7 +6,9 @@
     "type": "object",
     "required": [
       "command",
-      "working_directory"
+      "working_directory",
+      "task",
+      "current_step"
     ],
     "properties": {
       "command": {
@@ -19,11 +21,11 @@
       },
       "task": {
         "type": "string",
-        "description": "The overall task being performed (required for completion check)"
+        "description": "The overall task being performed"
       },
       "current_step": {
         "type": "string",
-        "description": "The current step being executed (required for completion check)"
+        "description": "The current step being executed"
       }
     },
     "additionalProperties": false

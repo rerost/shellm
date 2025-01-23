@@ -7,18 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type mockCheck struct {
-	response string
-	err      error
-}
-
-func (m *mockCheck) Call(_ context.Context, _ CheckRequest) (string, error) {
-	if m.err != nil {
-		return "", m.err
-	}
-	return m.response, nil
-}
-
 func TestReceiveShellCommand_Run(t *testing.T) {
 	tests := []struct {
 		name           string
@@ -39,21 +27,7 @@ func TestReceiveShellCommand_Run(t *testing.T) {
 				"task": "test task",
 				"current_step": "echo test"
 			}`,
-			expectedOutput: "Completion Check Passed ✓",
-			wantErr:        false,
-		},
-		{
-			name: "command with failed check",
-			mockLLM: mockLLM{
-				response: `{"is_valid": false, "reason": "expected output not found"}`,
-			},
-			arguments: `{
-				"command": "echo 'test'",
-				"working_directory": ".",
-				"task": "test task",
-				"current_step": "echo test"
-			}`,
-			expectedOutput: "Completion Check Failed: expected output not found",
+			expectedOutput: "test",
 			wantErr:        false,
 		},
 		{
@@ -61,7 +35,9 @@ func TestReceiveShellCommand_Run(t *testing.T) {
 			check: nil,
 			arguments: `{
 				"command": "echo 'test'",
-				"working_directory": "."
+				"working_directory": ".",
+				"task": "test task",
+				"current_step": "echo test"
 			}`,
 			expectedOutput: "test",
 			wantErr:        false,
