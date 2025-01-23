@@ -1,15 +1,9 @@
 {
   "name": "receive_shell_command",
   "description": "Receive Shell Command and optionally check its completion",
-  "strict": true,
   "parameters": {
     "type": "object",
-    "required": [
-      "command",
-      "working_directory",
-      "task",
-      "current_step"
-    ],
+    "required": ["command", "working_directory"],
     "properties": {
       "command": {
         "type": "string",
@@ -21,13 +15,12 @@
       },
       "task": {
         "type": "string",
-        "description": "The overall task being performed"
+        "description": "The overall task being performed (optional)"
       },
       "current_step": {
         "type": "string",
-        "description": "The current step being executed"
+        "description": "The current step being executed (optional)"
       }
-    },
-    "additionalProperties": false
+    }
   }
 }
