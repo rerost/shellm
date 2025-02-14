@@ -8,7 +8,11 @@ Shellm REPL
 # Run Shell Command
 $ shellm "OKと出力して"
 Shellm REPL
-[ChatGPT] OK
+[Local] $ echo OK
+[Local] $ echo OK
+[Local] $ echo OK
+OK
+[ChatGPT] OKと出力しました。ありがとうございました。
 [System] Complete
 
 # Choice
@@ -24,11 +28,11 @@ Shellm REPL
 # Yes/No
 $ shellm "lsを実行するかどうか聞いて？"
 Shellm REPL
-[ChatGPT] lsコマンドを実行しますか？ (Yes/No)
+[ChatGPT] ディレクトリの内容を確認するために、"ls"コマンドを実行しますか？ (Yes/No)
 >
 
 # Complete
 $ shellm "なんでもなかった。終了して"
 Shellm REPL
-[ChatGPT] 了解しました。また何かお手伝いできることがあれば、お知らせください。さようなら。
+[ChatGPT] 了解しました。何か他に必要があればいつでもお知らせください。お疲れ様でした！
 [System] Complete
