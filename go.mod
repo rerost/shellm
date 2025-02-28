@@ -6,7 +6,7 @@ require (
 	github.com/google/go-cmdtest v0.4.0
 	github.com/peterh/liner v1.2.2
 	github.com/pkg/errors v0.9.1
-	github.com/sashabaranov/go-openai v1.37.0
+	github.com/sashabaranov/go-openai v1.38.0
 )
 
 require (
