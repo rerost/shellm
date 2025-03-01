@@ -11,18 +11,14 @@ Shellm REPL
 [Local] $ echo OK
 OK
 [ChatGPT] OK
-
-以上で作業は完了しました。何か他にお手伝いできることはありますか？
 [System] Complete
 
 # Choice
 $ shellm "私の血液型はどれだと思う？"
 Shellm REPL
-[ChatGPT] あなたの血液型は以下のどれですか？
-0: A型
-1: B型
-2: O型
-3: AB型
+[ChatGPT] あなたの血液型を決められる要因や情報はまだ提供されていません。具体的なヒントや手がかりはありますか？
+0: はい
+1: いいえ
 >
 
 # Yes/No
@@ -34,5 +30,5 @@ Shellm REPL
 # Complete
 $ shellm "なんでもなかった。終了して"
 Shellm REPL
-[ChatGPT] わかりました。それでは、またお手伝いが必要なときはお気軽にお知らせください。さようなら。
+[ChatGPT] 了解しました。このコンピュータ上での作業を終了します。ご利用ありがとうございました。
 [System] Complete
