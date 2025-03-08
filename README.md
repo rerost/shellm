@@ -1,3 +1,5 @@
+Use: Claude Code https://docs.anthropic.com/ja/docs/agents-and-tools/claude-code/overview
+
 # shellm
 Run any command by ChatGPT
 
